@@ -1,7 +1,5 @@
 #!/bin/bash
 
-declare -A words
-
 function process_file {
     printf "%s" "$(cat $1 | tr a A)" > $1
 }

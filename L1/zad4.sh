@@ -1,20 +1,27 @@
 #!/bin/bash
 
-declare -A words
+all_files=`find $1 -type f`
 
-function process_file {
-    counter=0
-    while read -r line || [ -n "$line" ]
+function process_files {
+    for word in $all_words
     do
-        (( counter+=1 ))
-        for word in $line 
-        do
-            echo file = $1 \| line = $counter \| word = $word
+        echo $word
+        for file in $all_files
+        do 
+            for line in $(grep -w -n $word $file | sed 's/[A-Za-z]*//g')
+            do
+                echo '  ' file: $file '|' line: ${line::-1}
+            done
         done
-    done <$1
+    done
 }
 
-for file in `find $1 -type f`
+all_words=""
+
+for file in $all_files
 do
-    process_file $file
+    all_words+=$(cat $file)
+    all_words+=" "
 done
+all_words=$(echo $all_words | tr " " "\n" | awk 'NF' | sort -u)
+process_files
