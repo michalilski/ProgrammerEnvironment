@@ -6,7 +6,7 @@ function process_file {
         for word in $(echo -e "${line// /\\n}"| sort -u)
         do
             if [[ $(echo $line | grep -w -o $word | wc -w) -gt 1 ]]; then
-                echo file = $1 \| line = $line \| word = $word
+                echo file: $1 \| line: $line \| word: $word
             fi
         done
     done <$1
